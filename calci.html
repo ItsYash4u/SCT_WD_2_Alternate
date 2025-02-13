@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator by ASk</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: black; }
+        #particles-js { position: absolute; width: 100%; height: 100%; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #fff;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-decoration: none;
+            animation: neon 1.5s ease-in-out infinite alternate;
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px #f6503d,
+                0 0 30px #fd4f49,
+                0 0 40px #f74a47,
+                0 0 55px #ff5f53;
+        }
+
+        @keyframes neon {
+            from {
+                text-shadow: 
+                    0 0 5px #fff,
+                    0 0 10px #fff,
+                    0 0 20px #fd4f49,
+                    0 0 30px #fd4f49,
+                    0 0 40px #fd4f49;
+            }
+            to {
+                text-shadow: 
+                    0 0 5px #fff,
+                    0 0 10px #fff,
+                    0 0 20px #ff00de,
+                    0 0 30px #ff00de,
+                    0 0 40px #ff00de,
+                    0 0 55px #ff00de,
+                    0 0 70px #ff00de;
+            }
+        }
+
+        .weather-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .location {
+            color: #888;
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+
+        .temp {
+            font-size: 2em;
+            font-weight: 300;
+        }
+
+        .weather-desc {
+            color: #888;
+        }
+
+        .clock {
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            color: white;
+            text-align: right;
+        }
+
+        .time {
+            font-size: 2em;
+            font-weight: 300;
+        }
+
+        .date {
+            color: #888;
+        }
+
+        .calculator {
+            background: rgba(32, 32, 32, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+            width: 320px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .display {
+            background: transparent;
+            color: white;
+            text-align: right;
+            padding: 20px;
+            font-size: 2.5em;
+            min-height: 80px;
+        }
+
+        .calculation {
+            font-size: 0.5em;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            padding: 20px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            background: #333;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(5px);
+        }
+
+        button:hover {
+            background: rgba(68, 68, 68, 0.9);
+            transform: translateY(-2px);
+        }
+
+        button.operator {
+            background: #4B0082;
+        }
+
+        button.equals {
+            background: #00bcd4;
+        }
+
+        button.clear {
+            background: #ff5722;
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.0/tsparticles.bundle.min.js"></script>
+    <script>
+        tsParticles.load("particles-js", {
+            particles: {
+                number: { value: 100 },
+                color: { value: "#ffffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                move: { enable: true, speed: 2 }
+            }
+        });
+    </script>
+   <!-- Neon logo-->
+    <div class="logo">@ASK</div>
+    <!-- Weather information section -->
+    <div class="weather-info">
+        <div class="location">Loading location...</div>
+        <div class="temp">--°C</div>
+        <div class="weather-desc">Loading weather...</div>
+    </div>
+
+    <!-- Clock section -->
+    <div class="clock">
+        <div class="time">04:59</div>
+        <div class="date">Wed, Jan 29</div>
+    </div>
+
+    <!-- Calculator main container -->
+    <div class="calculator">
+        <div class="display">
+            <div class="calculation"></div>
+            <div class="result">0</div>
+        </div>
+        <div class="buttons">
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button class="operator" onclick="addToDisplay('%')">%</button>
+            <button class="operator" onclick="backspace()">⌫</button>
+            <button class="operator" onclick="addToDisplay('/')">/</button>
+            <button onclick="addToDisplay('7')">7</button>
+            <button onclick="addToDisplay('8')">8</button>
+            <button onclick="addToDisplay('9')">9</button>
+            <button class="operator" onclick="addToDisplay('*')">×</button>
+            <button onclick="addToDisplay('4')">4</button>
+            <button onclick="addToDisplay('5')">5</button>
+            <button onclick="addToDisplay('6')">6</button>
+            <button class="operator" onclick="addToDisplay('-')">-</button>
+            <button onclick="addToDisplay('1')">1</button>
+            <button onclick="addToDisplay('2')">2</button>
+            <button onclick="addToDisplay('3')">3</button>
+            <button class="operator" onclick="addToDisplay('+')">+</button>
+            <button onclick="addToDisplay('00')">00</button>
+            <button onclick="addToDisplay('0')">0</button>
+            <button onclick="addToDisplay('.')">.</button>
+            <button class="equals" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+        // Calculator logic
+        let currentCalculation = '';
+        let currentResult = '0';
+        let calculationComplete = false;
+
+        const calculationDisplay = document.querySelector('.calculation');
+        const resultDisplay = document.querySelector('.result');
+
+        function addToDisplay(value) {
+            if (calculationComplete) {
+                if ('0123456789.'.includes(value)) {
+                    currentCalculation = '';
+                    currentResult = value;
+                } else {
+                    currentCalculation = currentResult + value;
+                    currentResult = '0';
+                }
+                calculationComplete = false;
+            } else {
+                if (currentResult === '0' && value !== '.') {
+                    currentResult = value;
+                } else {
+                    currentResult += value;
+                }
+            }
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            currentCalculation = '';
+            currentResult = '0';
+            calculationComplete = false;
+            updateDisplay();
+        }
+
+        function backspace() {
+            if (currentResult.length > 1) {
+                currentResult = currentResult.slice(0, -1);
+            } else {
+                currentResult = '0';
+            }
+            updateDisplay();
+        }
+
+        function calculate() {
+            try {
+                const fullCalculation = currentCalculation + currentResult;
+                const result = new Function('return ' + fullCalculation)(); // Ensures BODMAS
+                currentCalculation = fullCalculation + '=';
+                currentResult = String(result);
+                calculationComplete = true;
+                updateDisplay();
+            } catch (error) {
+                currentResult = 'Error';
+                calculationComplete = true;
+                updateDisplay();
+            }
+        }
+        
+
+        function updateDisplay() {
+            calculationDisplay.textContent = currentCalculation;
+            resultDisplay.textContent = currentResult;
+        }
+
+        // Clock functionality
+        function updateClock() {
+            const now = new Date();
+            const timeDisplay = document.querySelector('.time');
+            const dateDisplay = document.querySelector('.date');
+            
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            timeDisplay.textContent = `${hours}:${minutes}`;
+            
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            dateDisplay.textContent = `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}`;
+        }
+
+        // Weather and location functionality
+        async function getWeatherData(position) {
+            const { latitude, longitude } = position.coords;
+            try {
+                // Get location name using reverse geocoding
+                const geoResponse = await fetch(
+                    `https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=YOUR_API_KEY`
+                );
+                const geoData = await geoResponse.json();
+                const locationName = geoData[0].name;
+                
+                // Get weather data
+                const weatherResponse = await fetch(
+                    `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=YOUR_API_KEY`
+                );
+                const weatherData = await weatherResponse.json();
+                
+                // Update UI
+                document.querySelector('.location').textContent = locationName;
+                document.querySelector('.temp').textContent = `${Math.round(weatherData.main.temp)}°C`;
+                document.querySelector('.weather-desc').textContent = weatherData.weather[0].main;
+            } catch (error) {
+                document.querySelector('.location').textContent = 'Weather Unavailable';
+                console.error('Error fetching weather:', error);
+            }
+        }
+
+        // Initialize location and weather
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(getWeatherData, 
+                error => {
+                    document.querySelector('.location').textContent = 'Location access denied';
+                    console.error('Geolocation error:', error);
+                }
+            );
+        }
+
+        // Initialize clock
+        updateClock();
+        setInterval(updateClock, 60000);
+    </script>
+</body>
+</html>
